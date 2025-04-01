@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitgliederverwaltung</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <style>
+        #login {
+            text-align: center;
+            padding: 50px;
+        }
+        #login input {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #login button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #content {
+            display: none; /* Geschützte Inhalte sind erst versteckt */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login-Bereich -->
+    <div id="login">
+        <h2>🔒 Zugang gesperrt</h2>
+        <input type="password" id="password" placeholder="Passwort eingeben">
+        <button onclick="checkPassword()">Login</button>
+    </div>
+
+    <!-- Geschützter Inhalt -->
+    <div id="content">
+        <h1>Mitgliederverwaltung 
+            <button id="pushToDiscord" style="float: right;">📤 Push an Discord</button>
+        </h1>
+
+        <!-- Formular zum Hinzufügen eines neuen Mitglieds -->
+        <div class="form">
+            <input type="text" id="name" placeholder="Name eingeben" required>
+            <select id="rank">
+                <option value="Baskan">Baskan</option>
+                <option value="Abla">Abla</option>
+                <option value="11er">11er</option>
+                <option value="10">10</option>
+                <option value="Mitglied">Mitglied</option>
+                <option value="Probezeit">Probezeit</option>
+            </select>
+            <select id="status">
+                <option value="Aktiv">Aktiv</option>
+                <option value="Wechselbank">Wechselbank</option>
+                <option value="Gebannt">Gebannt</option>
+            </select>
+            <button id="addMember">Hinzufügen</button>
+        </div>
+
+        <!-- Mitglieder Tabelle -->
+        <table id="memberTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>⬍</th>
+                    <th>Name</th>
+                    <th>Rang</th>
+                    <th>Status</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody id="sortable">
+                <!-- Hier werden die Mitglieder dynamisch geladen -->
+            </tbody>
+        </table>
+
+        <!-- Statistik-Zusammenfassung -->
+        <h3 id="statsSummary"></h3>
+
+        <button onclick="logout()">🔑 Abmelden</button>
+
+    </div>
+
+    <script>
+        const correctPassword = "LT6161";
+
+        function checkPassword() {
+            const inputPassword = document.getElementById("password").value;
+            if (inputPassword === correctPassword) {
+                sessionStorage.setItem("loggedIn", "true"); // Speichert den Login für die Sitzung
+                showContent();
+            } else {
+                alert("❌ Falsches Passwort!");
+            }
+        }
+
+        function showContent() {
+            document.getElementById("login").style.display = "none";
+            document.getElementById("content").style.display = "block";
+        }
+
+        function logout() {
+            sessionStorage.removeItem("loggedIn");
+            location.reload(); // Seite neuladen
+        }
+
+        // Falls schon eingeloggt, direkt Inhalt zeigen
+        if (sessionStorage.getItem("loggedIn") === "true") {
+            showContent();
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
