@@ -1,0 +1,9 @@
+// Funktion zum Erstellen und Speichern der Mitglieder-Datei (manuell)
+function downloadMembersAsJSON() {
+    const fileContent = JSON.stringify(members, null, 2);
+    const blob = new Blob([fileContent], { type: 'application/json' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "members.json";
+    link.click();
+}
